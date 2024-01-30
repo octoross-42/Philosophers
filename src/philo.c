@@ -6,7 +6,7 @@
 /*   By: octoross <octoross@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/28 17:31:19 by octoross          #+#    #+#             */
-/*   Updated: 2024/01/30 15:04:37 by octoross         ###   ########.fr       */
+/*   Updated: 2024/01/30 16:34:27 by octoross         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,11 +94,40 @@ int	ft_parsing(t_philo *philo, int argc, char **argv)
 	return (0);
 }
 
+int	ft_setup_philos(t_philo philo)
+{
+	int	i;
+
+	i = 0;
+	
+	while (i < philo.nbr_philos)
+	{
+		if ()
+		i ++;
+	}
+	int pthread_create(pthread_t *restrict thread, const pthread_attr_t *restrict attr,
+                          void *(*start_routine)(void *),
+                          void *restrict arg);
+}
+
+int	ft_usleep(size_t ms)
+{
+	// BECAUSE OF INCOMPETENCE
+	size_t	start;
+
+	start = get_current_time();
+	while ((get_current_time() - start) < ms)
+		usleep(500);
+	return (0);
+}
+
 int	main(int argc, char **argv)
 {
 	t_philo	philo;
 
 	if (ft_parsing(&philo, argc, argv))
+		return (1);
+	if (ft_setup_philos(philo))
 		return (1);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: octoross <octoross@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/28 17:32:59 by octoross          #+#    #+#             */
-/*   Updated: 2024/01/30 14:16:20 by octoross         ###   ########.fr       */
+/*   Updated: 2024/01/30 16:31:17 by octoross         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,13 @@
 
 typedef struct s_philosophe
 {
-	pthread_t	*thread;
-	int			pidLeft;
-	int			pidRight;
-	pthread_mutex_t    mutex;
+	int			nbr_time_eat;
+	int			nbr_time_eaten;
+	int			*someone_dead;
+	pthread_t		*thread;
+	pthread_mutex_t	mutex;
+	pthread_mutex_t	*fork_right;
+	pthread_mutex_t	*fork_left;
 }	t_philosophe;
 
 typedef struct s_philo

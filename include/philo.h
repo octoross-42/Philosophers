@@ -6,7 +6,7 @@
 /*   By: octoross <octoross@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/28 17:32:59 by octoross          #+#    #+#             */
-/*   Updated: 2024/01/28 21:26:22 by octoross         ###   ########.fr       */
+/*   Updated: 2024/01/30 14:16:20 by octoross         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@
 # include <unistd.h>
 # include <sys/time.h>
 # include <pthread.h>
+
+# include <ctype.h>
 
 # define ERR_FORMAT_ARGS "Error : Wrong format for arguments\n"
 # define ERR_NBR_ARGS "Error : Not enough arguments\n"
@@ -43,5 +45,7 @@ typedef struct s_philo
 	int				sleep;
 	int				*nbr_eat;
 }	t_philo;
+
+size_t  ft_nbr_words(char const *s, char c);
 
 #endif

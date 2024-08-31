@@ -6,13 +6,15 @@
 /*   By: octoross <octoross@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/28 17:32:59 by octoross          #+#    #+#             */
-/*   Updated: 2024/01/30 16:31:17 by octoross         ###   ########.fr       */
+/*   Updated: 2024/08/31 14:28:30 by octoross         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_H
 
 # define PHILO_H
+
+# include "utils.h"
 
 # include <string.h>
 # include <stdlib.h>
@@ -21,34 +23,41 @@
 # include <sys/time.h>
 # include <pthread.h>
 
-# include <ctype.h>
-
-# define ERR_FORMAT_ARGS "Error : Wrong format for arguments\n"
-# define ERR_NBR_ARGS "Error : Not enough arguments\n"
-# define ERR_MALLOC "Error : malloc failed\n"
-# define ERR_ATOI "Error : args is not atoiable :("
-
-typedef struct s_philosophe
-{
-	int			nbr_time_eat;
-	int			nbr_time_eaten;
-	int			*someone_dead;
-	pthread_t		*thread;
-	pthread_mutex_t	mutex;
-	pthread_mutex_t	*fork_right;
-	pthread_mutex_t	*fork_left;
-}	t_philosophe;
+struct	s_params;
 
 typedef struct s_philo
 {
-	t_philosophe	*philosophes;
-	int				nbr_philos;
-	int				die;
-	int				eat;
-	int				sleep;
-	int				*nbr_eat;
+	double			die_at;
+	double			last_meal;
+	int				id;
+	int				nbr_time_eaten;
+	int				finished;
+	int				died;
+	struct s_params	*params;
+	pthread_t		*thread;
+	pthread_mutex_t	*right_fork;
+	pthread_mutex_t	*left_fork;
+	pthread_mutex_t	action_lock;
 }	t_philo;
 
-size_t  ft_nbr_words(char const *s, char c);
+typedef struct s_params
+{
+	int				nbr_philos;
+	double			fasting_limit;
+	double			meal_duration;
+	double			sleep_duration;
+	int				nbr_meals;
+	int				finished;
+	struct timeval	start;
+	t_philo			*philos;
+	pthread_t		*monitor;
+	pthread_mutex_t	write;
+}	t_params;
+
+int	ft_get_time(double *utime, struct timeval ref);
+int	ft_usleep(double sleep_duration);
+
+int	ft_parsing(t_params *params, int argc, char **argv);
+int	ft_init(t_params *params);
 
 #endif

@@ -1,7 +1,9 @@
 NAME = philo
 
 SRCS = src/philo.c \
-		src/utils.c
+		src/parsing/parsing.c \
+		src/utils/utils.c \
+		src/utils/time.c
 
 OBJS = ${SRCS:.c=.o}
 

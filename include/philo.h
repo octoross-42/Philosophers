@@ -6,7 +6,7 @@
 /*   By: octoross <octoross@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/28 17:32:59 by octoross          #+#    #+#             */
-/*   Updated: 2024/08/31 14:28:30 by octoross         ###   ########.fr       */
+/*   Updated: 2024/09/01 12:16:57 by octoross         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,5 +59,8 @@ int	ft_usleep(double sleep_duration);
 
 int	ft_parsing(t_params *params, int argc, char **argv);
 int	ft_init(t_params *params);
+
+void	*ft_routine(void *philo);
+void	*ft_monitor(void *params);
 
 #endif

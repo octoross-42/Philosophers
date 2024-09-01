@@ -6,7 +6,7 @@
 /*   By: octoross <octoross@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 01:30:46 by octoross          #+#    #+#             */
-/*   Updated: 2024/08/31 15:31:07 by octoross         ###   ########.fr       */
+/*   Updated: 2024/09/01 12:48:29 by octoross         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,12 @@
 # define MESSAGE_3 "3rd be the most important part (of life) :\n"
 # define MESSAGE_4 "4rth be never enough :\n"
 # define MESSAGE_5 "5th is as necessary as life (optional):\n"
+
+# define ACTION_FORK "has taken a fork"
+# define ACTION_EAT "is eating"
+# define ACTION_SLEEP "is sleeping"
+# define ACTION_THINK "is thinking"
+# define ACTION_DIED "died"
 
 # include <limits.h>
 

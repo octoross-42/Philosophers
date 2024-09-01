@@ -6,7 +6,7 @@
 /*   By: octoross <octoross@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/28 17:31:19 by octoross          #+#    #+#             */
-/*   Updated: 2024/08/19 17:14:22 by octoross         ###   ########.fr       */
+/*   Updated: 2024/09/01 12:15:50 by octoross         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,6 @@ int	main(int argc, char **argv)
 	if (ft_init(&params))
 		return (1);
 	if (ft_bybye(&params))
-		return (printf("%s", ERR_DESTROY), 1);
+		return (printf("%s", ERR_DESTROY_MUTEX), 1);
 	return (0);
 }

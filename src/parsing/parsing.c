@@ -6,7 +6,7 @@
 /*   By: octoross <octoross@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 22:11:00 by octoross          #+#    #+#             */
-/*   Updated: 2024/08/31 15:36:42 by octoross         ###   ########.fr       */
+/*   Updated: 2024/09/01 12:14:56 by octoross         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ int	ft_init_philo(t_philo *philos, int i, t_params *params)
 	// TODO case 1 philo
 	if (i == params->nbr_philos - 1)
 		philos[i].right_fork = philos[0].left_fork;
-	pthread_mutex_init(&philos[i].action_lock, NULL);
+	// pthread_mutex_init(&philos[i].action_lock, NULL);
 	// TODO fail les mutex init
 	return (0);
 }
@@ -118,7 +118,7 @@ int	ft_init_threads(t_params *params)
 
 	if (gettimeofday(&params->start, NULL) == -1)
 		return (printf("%s", ERR_TIME), 1);
-	if (pthread_create(&t0, NULL, &monitor, &data->philos[0]))
+	if (pthread_create(params->monitor, NULL, &ft_monitor, params))
 		return (printf("%s", ERR_INIT_THREAD), 1);
 	i = 0;
 	while (i < params->nbr_philos)
@@ -136,6 +136,9 @@ int	ft_init_threads(t_params *params)
 			return (printf("%s", ERR_DESTROY_THREAD), 1);
 		i ++;
 	}
+	if (pthread_join(*params->monitor, NULL))
+		// TODO
+		return (printf("%s", ERR_DESTROY_THREAD), 1);
 	return (0);
 }
 

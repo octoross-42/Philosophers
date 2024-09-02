@@ -12,10 +12,10 @@ CC = cc
 CFLAGS = -Wall -Wextra -Werror
 
 %.o: %.c
-	$(CC) -pthread -Iinclude/ -c $< -o ${<:.c=.o}	
+	$(CC) -pthread -g3 -Iinclude/ -c $< -o ${<:.c=.o}	
 
 $(NAME): ${OBJS}
-	$(CC) $(OBJS) -o $(NAME)
+	$(CC) $(OBJS) -g3 -o $(NAME)
 
 all : ${NAME}
 

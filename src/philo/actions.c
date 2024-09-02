@@ -85,9 +85,9 @@ int	ft_eat(t_philo *philo)
 	philo->is_eating = 1;
 	pthread_mutex_unlock(&philo->lock);
 	stop = ft_usleep(philo->params->meal_duration * 1000, philo->params);
+	pthread_mutex_lock(&philo->lock);
 	pthread_mutex_unlock(right);
 	pthread_mutex_unlock(left);
-	pthread_mutex_lock(&philo->lock);
 	philo->nbr_time_eaten ++;
 	philo->is_eating = 0;
 	pthread_mutex_unlock(&philo->lock);
@@ -107,6 +107,7 @@ int	ft_routine(t_philo *philo)
 		return (1);
 	if (philo->nbr_time_eaten == philo->params->nbr_meals)
 	{
+		// printf("here lllllllllllllllllllllllllllllllllllllllllllllllll_ %d\n", philo->id);
 		pthread_mutex_lock(&philo->params->finished_philos_mutex);
 		philo->params->finished_philos ++;
 		pthread_mutex_unlock(&philo->params->finished_philos_mutex);
@@ -135,8 +136,8 @@ void	*ft_start_routine(void *philo_ptr)
 	philo->last_meal = time;
 	pthread_mutex_unlock(&philo->lock);
 	// printf("die_at %f, last_meal %f, id %d, over %d, is_eating %d, nbr_time_eaten %d\n", philo->die_at, philo->last_meal, philo->id, philo->over, philo->is_eating, philo->nbr_time_eaten);	
-	if (!(philo->id % 2))
-		usleep(philo->params->meal_duration * 900);
+	// if (!(philo->id % 2))
+	// 	usleep(philo->params->meal_duration * 900);
 	// TODO mettre ca dans une varible
 	while (!ft_the_end(philo->params))
 	{
@@ -149,8 +150,6 @@ void	*ft_start_routine(void *philo_ptr)
 			return (NULL);
 		}
 		// TODO message erreur
-		else if (routine == 2)
-			return (NULL);
 	}
 	// pthread_mutex_lock(&philo->params->write);
 	// printf("philo %d stop\n", philo->id);
@@ -189,7 +188,7 @@ int	ft_monitor(void *params_ptr)
 			}
 			// printf("die at : %llu\n", params->philos[i].die_at);
 			time = ft_get_time(params->start);
-			if (((int)(time / 1000)) > ((int)(params->philos[i].die_at / 1000)))
+			if (((int)(time / 1000)) >= ((int)(params->philos[i].die_at / 1000)))
 			{
 				ft_print_action(&params->philos[i], ACTION_DIED);
 				pthread_mutex_lock(&params->stop_mutex);

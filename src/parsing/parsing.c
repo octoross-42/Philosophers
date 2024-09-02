@@ -6,7 +6,7 @@
 /*   By: octoross <octoross@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 22:11:00 by octoross          #+#    #+#             */
-/*   Updated: 2024/09/02 18:55:30 by octoross         ###   ########.fr       */
+/*   Updated: 2024/09/02 19:38:17 by octoross         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,12 @@ int	ft_parsing(t_params *params, int argc, char **argv)
 		params->nbr_meals = ft_atopi(argv[4]);
 	else
 		params->nbr_meals = -1;
-	if ((params->nbr_philos <= 0) || (valid != 3)
+	if (params->nbr_philos == 1)
+		return (printf("%s", ERR_ALONE), 1);
+	if (valid == 3 && (params->fasting_limit < 10 || params->meal_duration < 10
+		|| params->sleep_duration < 10))
+		return (printf("%s", ERR_DURATION), 1);
+	if ((params->nbr_philos < 2) || (valid != 3)
 		|| (params->nbr_meals <= 0 && argc == 5))
 		return (printf("%s", ERR_ATOI), 1);
 	return (0);
@@ -171,6 +176,12 @@ int	ft_init(t_params *params)
 	params->philos = malloc(sizeof(t_params) * params->nbr_philos);
 	if (!params->philos)
 		return (printf("%s", ERR_MALLOC), 1);
+	if (pthread_mutex_init(&params->write, NULL))
+		return (ft_bybye_philos(&params->philos, params->nbr_philos, ERR_INIT_MUTEX));
+	if (pthread_mutex_init(&params->finished_philos_mutex, NULL))
+		return (1); //TODO
+	if (pthread_mutex_init(&params->stop_mutex, NULL))
+		return (1); //TODO
 	i = 0;
 	while (i < params->nbr_philos)
 	{
@@ -178,12 +189,6 @@ int	ft_init(t_params *params)
 			return (ft_bybye_philos(&params->philos, i, ERR_MALLOC));
 		i ++;
 	}
-	if (pthread_mutex_init(&params->write, NULL))
-		return (ft_bybye_philos(&params->philos, params->nbr_philos, ERR_INIT_MUTEX));
-	if (pthread_mutex_init(&params->finished_philos_mutex, NULL))
-		return (1); //TODO
-	if (pthread_mutex_init(&params->stop_mutex, NULL))
-		return (1); //TODO
 	ft_init_threads(params);
 	return (0);
 }

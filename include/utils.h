@@ -6,7 +6,7 @@
 /*   By: octoross <octoross@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 01:30:46 by octoross          #+#    #+#             */
-/*   Updated: 2024/09/02 18:55:25 by octoross         ###   ########.fr       */
+/*   Updated: 2024/09/02 19:24:35 by octoross         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@
 # define HELP 1
 # define USLEEP_PACE 50
 
+# define ERR_DURATION "Durations under 10ms are not accepted due to reality\n"
+# define ERR_ALONE "Alone, the philosopher starves and dies... Are you happy now ?\n"
 # define ERR_NE_ARGS "Error : Not enough arguments\n"
 # define ERR_TM_ARGS "Error : Too many arguments\n"
 # define ERR_MALLOC "Error : malloc failed\n"

@@ -6,7 +6,7 @@
 /*   By: octoross <octoross@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 22:11:00 by octoross          #+#    #+#             */
-/*   Updated: 2024/09/01 18:35:28 by octoross         ###   ########.fr       */
+/*   Updated: 2024/09/02 18:55:30 by octoross         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,8 @@ void	ft_help(int argc, char **argv)
 
 int	ft_parsing(t_params *params, int argc, char **argv)
 {
+	int	valid;
+
 	if (argc <= 0)
 		return (printf("%s", ERR_NE_ARGS), 1);
 	if ((!ft_strcmp(argv[0], "-help") || !ft_strcmp(argv[0], "help") || !ft_strcmp(argv[0], "-h")) && HELP)
@@ -57,16 +59,16 @@ int	ft_parsing(t_params *params, int argc, char **argv)
 		return ("%s", printf(ERR_NE_ARGS), 1);
 	else if (argc > 5)
 		return ("%s", printf(ERR_TM_ARGS), 1);
+	valid = 0;
 	params->nbr_philos = ft_atopi(argv[0]);
-	params->fasting_limit = ft_atopd(argv[1]);
-	params->meal_duration = ft_atopd(argv[2]);
-	params->sleep_duration = ft_atopd(argv[3]);
+	params->fasting_limit = ft_atosi(argv[1], &valid);
+	params->meal_duration = ft_atosi(argv[2], &valid);
+	params->sleep_duration = ft_atosi(argv[3], &valid);
 	if (argc == 5)
-		params->nbr_meals = ft_atopd(argv[4]);
+		params->nbr_meals = ft_atopi(argv[4]);
 	else
 		params->nbr_meals = -1;
-	if ((params->nbr_philos <= 0) || (params->fasting_limit <= 0)
-		|| (params->meal_duration <= 0) || (params->sleep_duration <= 0)
+	if ((params->nbr_philos <= 0) || (valid != 3)
 		|| (params->nbr_meals <= 0 && argc == 5))
 		return (printf("%s", ERR_ATOI), 1);
 	return (0);
@@ -111,20 +113,20 @@ int	ft_init_philo(t_philo *philos, int i, t_params *params)
 	return (0);
 }
 
-void	print_all(t_params *params)
-{
-	int		i;
-	double	time;
+// void	print_all(t_params *params)
+// {
+// 	int		i;
+// 	uint64_t	time;
 	
-	i = 0;
-	while (i < params->nbr_philos)
-	{
-		printf("die_at %f, last_meal %f, id %d, is_eating %d, nbr_time_eaten %d\n", params->philos[i].die_at, params->philos[i].last_meal, params->philos[i].id, params->philos[i].is_eating, params->philos[i].nbr_time_eaten);
-		i ++;
-	}
-	ft_get_time(&time, params->start);
-	printf("time : %f\n", time);
-}
+// 	i = 0;
+// 	while (i < params->nbr_philos)
+// 	{
+// 		printf("die_at %f, last_meal %f, id %d, is_eating %d, nbr_time_eaten %d\n", params->philos[i].die_at, params->philos[i].last_meal, params->philos[i].id, params->philos[i].is_eating, params->philos[i].nbr_time_eaten);
+// 		i ++;
+// 	}
+// 	ft_get_time(&time, params->start);
+// 	printf("time : %f\n", time);
+// }
 
 
 int	ft_init_threads(t_params *params)
@@ -162,6 +164,10 @@ int	ft_init(t_params *params)
 
 	params->finished_philos = 0;
 	params->stop = 0;
+	if (USLEEP_PACE <= 0 || USLEEP_PACE >= 10000 || (USLEEP_PACE % params->meal_duration) || (USLEEP_PACE % params->sleep_duration))
+		params->usleep_pace = 50;	
+	else
+		params->usleep_pace = USLEEP_PACE;
 	params->philos = malloc(sizeof(t_params) * params->nbr_philos);
 	if (!params->philos)
 		return (printf("%s", ERR_MALLOC), 1);

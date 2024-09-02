@@ -6,7 +6,7 @@
 /*   By: octoross <octoross@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/28 17:32:59 by octoross          #+#    #+#             */
-/*   Updated: 2024/09/01 21:58:43 by octoross         ###   ########.fr       */
+/*   Updated: 2024/09/02 16:00:50 by octoross         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@ struct	s_params;
 
 typedef struct s_philo
 {
-	double			die_at;
-	double			last_meal;
+	uint64_t		die_at;
+	uint64_t		last_meal;
 	int				id;
 	int				is_eating;
 	int				nbr_time_eaten;
@@ -41,10 +41,11 @@ typedef struct s_philo
 
 typedef struct s_params
 {
+	uint64_t		fasting_limit;
+	uint64_t		meal_duration;
+	uint64_t		sleep_duration;
+	int				usleep_pace;
 	int				nbr_philos;
-	double			fasting_limit;
-	double			meal_duration;
-	double			sleep_duration;
 	int				nbr_meals;
 	int				finished_philos;
 	int				stop;
@@ -55,8 +56,8 @@ typedef struct s_params
 	pthread_mutex_t	stop_mutex;
 }	t_params;
 
-int	ft_get_time(double *utime, struct timeval ref);
-int	ft_usleep(double sleep_duration, t_params *params);
+uint64_t	ft_get_time(struct timeval ref);
+int			ft_usleep(uint64_t sleep_duration, t_params *params);
 
 int	ft_parsing(t_params *params, int argc, char **argv);
 int	ft_init(t_params *params);

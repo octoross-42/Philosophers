@@ -6,7 +6,7 @@
 /*   By: octoross <octoross@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 01:30:46 by octoross          #+#    #+#             */
-/*   Updated: 2024/09/01 15:51:02 by octoross         ###   ########.fr       */
+/*   Updated: 2024/09/02 18:55:25 by octoross         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 # define UTILS_H
 
 # define HELP 1
+# define USLEEP_PACE 50
 
 # define ERR_NE_ARGS "Error : Not enough arguments\n"
 # define ERR_TM_ARGS "Error : Too many arguments\n"
@@ -24,7 +25,7 @@
 # define ERR_DESTROY_THREAD "Error : thread could not be destroyed\n"
 # define ERR_INIT_MUTEX "Error : mutex could not be initiated\n"
 # define ERR_DESTROY_MUTEX "Error : mutex could not be destroyed\n"
-# define ERR_TIME "Error : time could not be fetched\n"
+# define ERR_TIME "Error : time could not be fetched: gettimeofday failed\n"
 
 # define HELP_ARGS "Arguments should be 4 or 5 (optional) positive numbers\n"
 # define HELP_1 "\tnumber of philosophers\n"
@@ -46,9 +47,10 @@
 # define ACTION_DIED "died"
 
 # include <limits.h>
+# include <stdint.h>
 
 int	ft_strcmp(const char *s1, const char *s2);
-double	ft_atopd(const char *s);
+uint64_t	ft_atosi(const char *s, int *valid);
 int	ft_atopi(const char *s);
 
 #endif

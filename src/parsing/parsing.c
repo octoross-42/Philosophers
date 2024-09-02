@@ -6,7 +6,7 @@
 /*   By: octoross <octoross@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 22:11:00 by octoross          #+#    #+#             */
-/*   Updated: 2024/09/01 12:14:56 by octoross         ###   ########.fr       */
+/*   Updated: 2024/09/01 18:35:28 by octoross         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,12 +87,11 @@ int	ft_bybye_philos(t_philo **philos, int nbr_philo, char *err)
 }
 int	ft_init_philo(t_philo *philos, int i, t_params *params)
 {
-	philos[i].die_at = params->fasting_limit;
+	philos[i].die_at = 0;
 	philos[i].last_meal = 0;
 	philos[i].id = i + 1;
 	philos[i].nbr_time_eaten = 0;
-	philos[i].finished = 0;
-	philos[i].died = 0;
+	philos[i].is_eating = 0;
 	philos[i].params = params;
 	philos[i].thread = (pthread_t *)malloc(sizeof(pthread_t));
 	if (!philos[i].thread)
@@ -107,10 +106,26 @@ int	ft_init_philo(t_philo *philos, int i, t_params *params)
 	// TODO case 1 philo
 	if (i == params->nbr_philos - 1)
 		philos[i].right_fork = philos[0].left_fork;
-	// pthread_mutex_init(&philos[i].action_lock, NULL);
+	pthread_mutex_init(&philos[i].lock, NULL);
 	// TODO fail les mutex init
 	return (0);
 }
+
+void	print_all(t_params *params)
+{
+	int		i;
+	double	time;
+	
+	i = 0;
+	while (i < params->nbr_philos)
+	{
+		printf("die_at %f, last_meal %f, id %d, is_eating %d, nbr_time_eaten %d\n", params->philos[i].die_at, params->philos[i].last_meal, params->philos[i].id, params->philos[i].is_eating, params->philos[i].nbr_time_eaten);
+		i ++;
+	}
+	ft_get_time(&time, params->start);
+	printf("time : %f\n", time);
+}
+
 
 int	ft_init_threads(t_params *params)
 {
@@ -118,16 +133,16 @@ int	ft_init_threads(t_params *params)
 
 	if (gettimeofday(&params->start, NULL) == -1)
 		return (printf("%s", ERR_TIME), 1);
-	if (pthread_create(params->monitor, NULL, &ft_monitor, params))
-		return (printf("%s", ERR_INIT_THREAD), 1);
+	// print_all(params);
 	i = 0;
 	while (i < params->nbr_philos)
 	{
-		if (pthread_create(params->philos[i].thread, NULL, &ft_routine, &params->philos[i]))
+		if (pthread_create(params->philos[i].thread, NULL, &ft_start_routine, &params->philos[i]))
 		// TODO destroy thread create avant le fail
 			return (printf("%s", ERR_INIT_THREAD), 1);
 		i ++;
 	}
+	ft_monitor(params);
 	i = 0;
 	while (i < params->nbr_philos)
 	{
@@ -136,17 +151,17 @@ int	ft_init_threads(t_params *params)
 			return (printf("%s", ERR_DESTROY_THREAD), 1);
 		i ++;
 	}
-	if (pthread_join(*params->monitor, NULL))
-		// TODO
-		return (printf("%s", ERR_DESTROY_THREAD), 1);
 	return (0);
 }
+
+
 
 int	ft_init(t_params *params)
 {
 	int	i;
 
-	params->finished = 0;
+	params->finished_philos = 0;
+	params->stop = 0;
 	params->philos = malloc(sizeof(t_params) * params->nbr_philos);
 	if (!params->philos)
 		return (printf("%s", ERR_MALLOC), 1);
@@ -157,11 +172,12 @@ int	ft_init(t_params *params)
 			return (ft_bybye_philos(&params->philos, i, ERR_MALLOC));
 		i ++;
 	}
-	params->monitor = (pthread_t *)malloc(sizeof(pthread_t));
-	if (!(params->monitor))
-		return (ft_bybye_philos(&params->philos, params->nbr_philos, ERR_MALLOC));
 	if (pthread_mutex_init(&params->write, NULL))
-		return (free(params->monitor), ft_bybye_philos(&params->philos, params->nbr_philos, ERR_INIT_MUTEX));
+		return (ft_bybye_philos(&params->philos, params->nbr_philos, ERR_INIT_MUTEX));
+	if (pthread_mutex_init(&params->finished_philos_mutex, NULL))
+		return (1); //TODO
+	if (pthread_mutex_init(&params->stop_mutex, NULL))
+		return (1); //TODO
 	ft_init_threads(params);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: octoross <octoross@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 19:56:24 by octoross          #+#    #+#             */
-/*   Updated: 2024/08/31 14:16:21 by octoross         ###   ########.fr       */
+/*   Updated: 2024/09/01 21:51:23 by octoross         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	ft_get_time(double *utime, struct timeval ref)
 	return (0);
 }
 
-int	ft_usleep(double sleep_duration)
+int	ft_usleep(double sleep_duration, t_params *params)
 {
 	struct timeval	start;
 	double			timer;
@@ -45,7 +45,7 @@ int	ft_usleep(double sleep_duration)
 		return (1);
 	if (sleep_duration - timer > 1000)
 		usleep((sleep_duration - timer) / 2);
-	while (timer < sleep_duration)
+	while ((timer < sleep_duration) && !ft_the_end(params))
 	{
 		if (ft_get_time(&timer, start))
 			return (1);

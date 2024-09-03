@@ -1,10 +1,12 @@
 NAME = philo
 
-SRCS = src/philo.c \
+SRCS = src/main.c \
 		src/parsing/parsing.c \
+		src/parsing/init.c \
 		src/utils/utils.c \
 		src/utils/time.c \
-		src/philo/actions.c
+		src/routine/actions.c \
+		src/routine/routine.c
 
 OBJS = ${SRCS:.c=.o}
 
@@ -12,7 +14,7 @@ CC = cc
 CFLAGS = -Wall -Wextra -Werror
 
 %.o: %.c
-	$(CC) -pthread -g3 -Iinclude/ -c $< -o ${<:.c=.o}	
+	$(CC) -pthread -Iinclude/ -c $< -o ${<:.c=.o}	
 
 $(NAME): ${OBJS}
 	$(CC) $(OBJS) -g3 -o $(NAME)

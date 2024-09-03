@@ -6,7 +6,7 @@
 /*   By: octoross <octoross@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/28 17:32:59 by octoross          #+#    #+#             */
-/*   Updated: 2024/09/03 17:44:24 by octoross         ###   ########.fr       */
+/*   Updated: 2024/09/03 19:08:38 by octoross         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,13 +59,16 @@ typedef struct s_data
 uint64_t	ft_get_time(struct timeval ref);
 int			ft_usleep(uint64_t sleep_duration, t_data *data);
 
-void	ft_clear_data(t_data *data, int n, int thread, char *err);
+void		ft_clear_data(t_data *data, int n, int thread, char *err);
 int			ft_parsing(t_data *data, int argc, char **argv);
 int			ft_init(t_data *data);
 
+int			ft_print_action(t_philo *philo, char *action);
+int			ft_eat(t_philo *philo);
+int			ft_sleep(t_philo *philo);
+int			ft_the_end(t_data *data);
+
 void		*ft_start_routine(void *philo_ptr);
 int			ft_monitor(void *data_ptr);
-
-int			ft_the_end(t_data *data);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: octoross <octoross@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 01:26:42 by octoross          #+#    #+#             */
-/*   Updated: 2024/09/02 15:59:43 by octoross         ###   ########.fr       */
+/*   Updated: 2024/09/03 18:45:23 by octoross         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,8 @@ uint64_t	ft_atosi(const char *s, int *valid)
 
 int	ft_atopi(const char *s)
 {
-	int			i;
-	unsigned	n;
+	int				i;
+	unsigned int	n;
 
 	i = 0;
 	n = 0;

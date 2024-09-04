@@ -43,7 +43,6 @@ void	ft_clear_data(t_data *data, int n, int thread, char *err)
 int	ft_init_threads(t_data *data)
 {
 	int	i;
-	int	j;
 
 	if (gettimeofday(&data->start, NULL) == -1)
 		return (ft_clear_data(data, -1, 0, ERR_TIME), 1);
@@ -96,7 +95,6 @@ int	ft_init_philo(t_philo *philos, int i, t_data *data)
 int	ft_init_philos(t_data *data)
 {
 	int		i;
-	int		j;
 
 	data->philos = malloc(sizeof(t_data) * data->nbr_philos);
 	if (!data->philos)
@@ -112,8 +110,6 @@ int	ft_init_philos(t_data *data)
 
 int	ft_init(t_data *data)
 {
-	int		i;
-
 	data->finished_philos = 0;
 	data->stop = 0;
 	if (USLEEP_PACE <= 0 || USLEEP_PACE >= 10000

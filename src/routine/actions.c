@@ -69,7 +69,6 @@ int	ft_drop_forks(t_philo *philo, pthread_mutex_t *left, pthread_mutex_t *right)
 
 int	ft_eat(t_philo *philo)
 {
-	uint64_t		time;
 	int				stop;
 	pthread_mutex_t	*left;
 	pthread_mutex_t	*right;

@@ -6,7 +6,7 @@
 /*   By: octoross <octoross@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/28 17:31:19 by octoross          #+#    #+#             */
-/*   Updated: 2024/09/04 18:15:21 by octoross         ###   ########.fr       */
+/*   Updated: 2024/09/04 18:33:18 by octoross         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	ft_case_one(t_data *data)
 {
-	uint64_t	time;
+	unsigned long	time;
 
 	data->stop = 0;
 	if (USLEEP_PACE <= 0 || USLEEP_PACE >= 10000

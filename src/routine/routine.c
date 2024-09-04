@@ -45,7 +45,7 @@ int	ft_routine(t_philo *philo)
 void	*ft_start_routine(void *philo_ptr)
 {
 	int			routine;
-	uint64_t	time;
+	unsigned long	time;
 	t_philo		*philo;
 
 	philo = (t_philo *)philo_ptr;
@@ -67,7 +67,7 @@ void	*ft_start_routine(void *philo_ptr)
 
 void	ft_monitor_philo(t_philo *philo, t_data *data)
 {
-	uint64_t	time;
+	unsigned long	time;
 
 	pthread_mutex_lock(&philo->lock);
 	if ((philo->die_at == 0) || (philo->nbr_time_eaten == data->nbr_meals))

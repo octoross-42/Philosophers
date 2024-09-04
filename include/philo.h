@@ -6,7 +6,7 @@
 /*   By: octoross <octoross@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/28 17:32:59 by octoross          #+#    #+#             */
-/*   Updated: 2024/09/04 18:10:26 by octoross         ###   ########.fr       */
+/*   Updated: 2024/09/04 18:33:18 by octoross         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@ struct	s_data;
 
 typedef struct s_philo
 {
-	uint64_t		die_at;
-	uint64_t		last_meal;
+	unsigned long		die_at;
+	unsigned long		last_meal;
 	int				id;
 	int				is_eating;
 	int				nbr_time_eaten;
@@ -41,9 +41,9 @@ typedef struct s_philo
 
 typedef struct s_data
 {
-	uint64_t		fasting_limit;
-	uint64_t		meal_duration;
-	uint64_t		sleep_duration;
+	unsigned long		fasting_limit;
+	unsigned long		meal_duration;
+	unsigned long		sleep_duration;
 	int				usleep_pace;
 	int				nbr_philos;
 	int				nbr_meals;
@@ -56,8 +56,8 @@ typedef struct s_data
 	pthread_mutex_t	stop_mutex;
 }	t_data;
 
-uint64_t	ft_get_time(struct timeval ref);
-int			ft_usleep(uint64_t sleep_duration, t_data *data);
+unsigned long	ft_get_time(struct timeval ref);
+int			ft_usleep(unsigned long sleep_duration, t_data *data);
 
 void		ft_clear_data(t_data *data, int n, int thread, char *err);
 int			ft_parsing(t_data *data, int argc, char **argv);

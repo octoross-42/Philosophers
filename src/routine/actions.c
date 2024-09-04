@@ -14,7 +14,7 @@
 
 int	ft_print_action(t_philo *philo, char *action)
 {
-	uint64_t	time;
+	unsigned long	time;
 
 	time = ft_get_time(philo->data->start);
 	pthread_mutex_lock(&philo->data->write);

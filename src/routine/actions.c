@@ -23,7 +23,7 @@ int	ft_print_action(t_philo *philo, char *action)
 		pthread_mutex_unlock(&philo->data->write);
 		return (1);
 	}
-	printf("%d %d %s\n", (int)(time / 1000), philo->id, action);
+	printf("%lu %d %s\n", (time / 1000), philo->id, action);
 	pthread_mutex_unlock(&philo->data->write);
 	return (0);
 }

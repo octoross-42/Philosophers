@@ -6,7 +6,7 @@
 /*   By: octoross <octoross@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 22:11:00 by octoross          #+#    #+#             */
-/*   Updated: 2024/09/03 18:34:28 by octoross         ###   ########.fr       */
+/*   Updated: 2024/09/04 18:15:47 by octoross         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	ft_help(int argc, char **argv)
 		ft_args_help(0);
 }
 
-int	ft_attribute_parsing(t_data *data, int argc, char **argv, int *valid)
+void	ft_attribute_parsing(t_data *data, int argc, char **argv, int *valid)
 {
 	*valid = 0;
 	data->nbr_philos = ft_atopi(argv[0]);
@@ -73,7 +73,7 @@ int	ft_parsing(t_data *data, int argc, char **argv)
 		return (ft_help(argc, argv), -1);
 	ft_attribute_parsing(data, argc, argv, &valid);
 	if (data->nbr_philos == 1)
-		return (printf("%s", ERR_ALONE), 1);
+		return (ft_case_one(data), 1);
 	if (valid == 3 && ((data->fasting_limit < 10) || (data->meal_duration < 10)
 			|| (data->sleep_duration < 10)))
 		return (printf("%s", ERR_DURATION), 1);

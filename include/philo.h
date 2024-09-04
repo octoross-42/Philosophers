@@ -6,7 +6,7 @@
 /*   By: octoross <octoross@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/28 17:32:59 by octoross          #+#    #+#             */
-/*   Updated: 2024/09/03 19:08:38 by octoross         ###   ########.fr       */
+/*   Updated: 2024/09/04 18:10:26 by octoross         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ int			ft_usleep(uint64_t sleep_duration, t_data *data);
 
 void		ft_clear_data(t_data *data, int n, int thread, char *err);
 int			ft_parsing(t_data *data, int argc, char **argv);
+int			ft_case_one(t_data *data);
 int			ft_init(t_data *data);
 
 int			ft_print_action(t_philo *philo, char *action);

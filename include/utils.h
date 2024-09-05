@@ -6,7 +6,7 @@
 /*   By: octoross <octoross@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 01:30:46 by octoross          #+#    #+#             */
-/*   Updated: 2024/09/04 18:36:26 by octoross         ###   ########.fr       */
+/*   Updated: 2024/09/05 15:42:59 by octoross         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,8 @@
 # include <limits.h>
 # include <stdint.h>
 
-int			ft_strcmp(const char *s1, const char *s2);
+int				ft_strcmp(const char *s1, const char *s2);
 unsigned long	ft_atosi(const char *s, int *valid);
-int			ft_atopi(const char *s);
+int				ft_atopi(const char *s);
 
 #endif

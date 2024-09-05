@@ -6,7 +6,7 @@
 /*   By: octoross <octoross@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 01:26:42 by octoross          #+#    #+#             */
-/*   Updated: 2024/09/05 15:35:07 by octoross         ###   ########.fr       */
+/*   Updated: 2024/09/05 15:43:35 by octoross         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ int	ft_strcmp(const char *s1, const char *s2)
 		i ++;
 	return (s1[i] - s2[i]);
 }
-#include <stdio.h>
 
 unsigned long	ft_atosi(const char *s, int *valid)
 {

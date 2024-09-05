@@ -44,9 +44,9 @@ int	ft_routine(t_philo *philo)
 
 void	*ft_start_routine(void *philo_ptr)
 {
-	int			routine;
+	int				routine;
 	unsigned long	time;
-	t_philo		*philo;
+	t_philo			*philo;
 
 	philo = (t_philo *)philo_ptr;
 	time = ft_get_time(philo->data->start);
@@ -62,7 +62,6 @@ void	*ft_start_routine(void *philo_ptr)
 		if (routine)
 			return (NULL);
 	}
-	
 	return (NULL);
 }
 

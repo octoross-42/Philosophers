@@ -30,7 +30,6 @@ int	ft_print_action(t_philo *philo, char *action)
 
 int	ft_take_forks(t_philo *philo, pthread_mutex_t *left, pthread_mutex_t *right)
 {
-	pthread_mutex_lock(left);
 	if (ft_print_action(philo, ACTION_FORK))
 		return (pthread_mutex_unlock(left), 1);
 	pthread_mutex_lock(right);
@@ -59,8 +58,8 @@ int	ft_take_forks(t_philo *philo, pthread_mutex_t *left, pthread_mutex_t *right)
 int	ft_drop_forks(t_philo *philo, pthread_mutex_t *left, pthread_mutex_t *right)
 {
 	pthread_mutex_lock(&philo->lock);
-	pthread_mutex_unlock(right);
 	pthread_mutex_unlock(left);
+	pthread_mutex_unlock(right);
 	philo->nbr_time_eaten ++;
 	philo->is_eating = 0;
 	pthread_mutex_unlock(&philo->lock);

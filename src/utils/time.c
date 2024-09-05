@@ -6,7 +6,7 @@
 /*   By: octoross <octoross@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 19:56:24 by octoross          #+#    #+#             */
-/*   Updated: 2024/09/04 18:44:32 by octoross         ###   ########.fr       */
+/*   Updated: 2024/09/05 15:35:02 by octoross         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ int	ft_usleep(unsigned long sleep_duration, t_data *data)
 	struct timeval	start;
 
 	gettimeofday(&start, NULL);
-	printf("time : %lu\n", sleep_duration);
 	while (!ft_the_end(data))
 	{
 		if (ft_get_time(start) >= sleep_duration)

@@ -6,7 +6,7 @@
 /*   By: octoross <octoross@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 01:26:42 by octoross          #+#    #+#             */
-/*   Updated: 2024/09/04 18:43:09 by octoross         ###   ########.fr       */
+/*   Updated: 2024/09/05 15:35:07 by octoross         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ unsigned long	ft_atosi(const char *s, int *valid)
 		if (n * 1000 > ULONG_MAX)
 			return (n);
 	}
-	printf("%llu\n", n);
 	if (!s[i])
 		(*valid)++;
 	return (n);

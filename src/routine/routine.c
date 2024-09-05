@@ -55,13 +55,14 @@ void	*ft_start_routine(void *philo_ptr)
 	philo->last_meal = time;
 	pthread_mutex_unlock(&philo->lock);
 	if (!(philo->id % 2))
-		usleep(philo->data->meal_duration * 900);
+		ft_usleep(philo->data->meal_duration * 900, philo->data);
 	while (!ft_the_end(philo->data))
 	{
 		routine = ft_routine(philo);
 		if (routine)
 			return (NULL);
 	}
+	
 	return (NULL);
 }
 
@@ -76,7 +77,7 @@ void	ft_monitor_philo(t_philo *philo, t_data *data)
 		return ;
 	}
 	time = ft_get_time(data->start);
-	if (((int)(time / 1000)) >= ((int)(philo->die_at / 1000)))
+	if ((time / 1000) >= (philo->die_at / 1000))
 	{
 		ft_print_action(philo, ACTION_DIED);
 		pthread_mutex_lock(&data->stop_mutex);

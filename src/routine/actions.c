@@ -12,7 +12,7 @@
 
 #include "philo.h"
 
-int	ft_print_action(t_philo *philo, char *action)
+bool	ft_print_action(t_philo *philo, char *action)
 {
 	unsigned long	time;
 
@@ -21,75 +21,65 @@ int	ft_print_action(t_philo *philo, char *action)
 	if (ft_the_end(philo->data))
 	{
 		pthread_mutex_unlock(&philo->data->write);
-		return (1);
+		return (true);
 	}
 	printf("%lu %d %s\n", (time / 1000), philo->id, action);
 	pthread_mutex_unlock(&philo->data->write);
-	return (0);
+	return (false);
 }
 
-int	ft_take_forks(t_philo *philo, pthread_mutex_t *left, pthread_mutex_t *right)
+static bool	ft_take_forks(t_philo *philo)
 {
+	pthread_mutex_lock(philo->left_fork);
 	if (ft_print_action(philo, ACTION_FORK))
-		return (pthread_mutex_unlock(left), 1);
-	pthread_mutex_lock(right);
+		return (pthread_mutex_unlock(philo->left_fork), true);
+	pthread_mutex_lock(philo->right_fork);
 	pthread_mutex_lock(&philo->lock);
 	if (ft_print_action(philo, ACTION_FORK))
 	{
-		pthread_mutex_unlock(right);
-		pthread_mutex_unlock(left);
+		pthread_mutex_unlock(philo->right_fork);
+		pthread_mutex_unlock(philo->left_fork);
 		pthread_mutex_unlock(&philo->lock);
-		return (1);
+		return (true);
 	}
 	if (ft_print_action(philo, ACTION_EAT))
 	{
-		pthread_mutex_unlock(right);
-		pthread_mutex_unlock(left);
+		pthread_mutex_unlock(philo->right_fork);
+		pthread_mutex_unlock(philo->left_fork);
 		pthread_mutex_unlock(&philo->lock);
-		return (1);
+		return (true);
 	}
 	philo->die_at = ft_get_time(philo->data->start)
 		+ philo->data->fasting_limit * 1000;
 	philo->is_eating = 1;
 	pthread_mutex_unlock(&philo->lock);
-	return (0);
+	return (false);
 }
 
-int	ft_drop_forks(t_philo *philo, pthread_mutex_t *left, pthread_mutex_t *right)
+static void	ft_drop_forks(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->lock);
-	pthread_mutex_unlock(left);
-	pthread_mutex_unlock(right);
+	pthread_mutex_unlock(philo->left_fork);
+	pthread_mutex_unlock(philo->right_fork);
 	philo->nbr_time_eaten ++;
 	philo->is_eating = 0;
 	pthread_mutex_unlock(&philo->lock);
-	return (0);
 }
 
-int	ft_eat(t_philo *philo)
+bool	ft_eat(t_philo *philo)
 {
-	int				stop;
-	pthread_mutex_t	*left;
-	pthread_mutex_t	*right;
+	bool	stop;
 
-	left = philo->left_fork;
-	right = philo->right_fork;
-	if (!(philo->id % 2))
-	{
-		left = philo->right_fork;
-		right = philo->left_fork;
-	}
-	if (ft_take_forks(philo, left, right))
-		return (1);
+	if (ft_take_forks(philo))
+		return (true);
 	stop = ft_usleep(philo->data->meal_duration * 1000, philo->data);
-	if (ft_drop_forks(philo, left, right))
-		return (1);
+	ft_drop_forks(philo);
 	return (stop);
 }
 
-int	ft_sleep(t_philo *philo)
+bool	ft_sleep(t_philo *philo)
 {
 	if (ft_print_action(philo, ACTION_SLEEP))
-		return (1);
+		return (true);
 	return (ft_usleep(philo->data->sleep_duration * 1000, philo->data));
 }

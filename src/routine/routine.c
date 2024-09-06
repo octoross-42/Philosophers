@@ -12,39 +12,38 @@
 
 #include "philo.h"
 
-int	ft_the_end(t_data *data)
+bool	ft_the_end(t_data *data)
 {
 	pthread_mutex_lock(&data->stop_mutex);
 	if (data->stop)
 	{
 		pthread_mutex_unlock(&data->stop_mutex);
-		return (1);
+		return (true);
 	}
 	pthread_mutex_unlock(&data->stop_mutex);
-	return (0);
+	return (false);
 }
 
-int	ft_routine(t_philo *philo)
+static bool	ft_routine(t_philo *philo)
 {
 	if (ft_eat(philo))
-		return (1);
+		return (true);
 	if (philo->nbr_time_eaten == philo->data->nbr_meals)
 	{
 		pthread_mutex_lock(&philo->data->finished_mutex);
 		philo->data->finished_philos ++;
 		pthread_mutex_unlock(&philo->data->finished_mutex);
-		return (1);
+		return (true);
 	}
 	if (ft_sleep(philo))
-		return (1);
+		return (true);
 	if (ft_print_action(philo, ACTION_THINK))
-		return (1);
-	return (0);
+		return (true);
+	return (false);
 }
 
 void	*ft_start_routine(void *philo_ptr)
 {
-	int				routine;
 	unsigned long	time;
 	t_philo			*philo;
 
@@ -54,18 +53,17 @@ void	*ft_start_routine(void *philo_ptr)
 	philo->die_at = time + philo->data->fasting_limit * 1000;
 	philo->last_meal = time;
 	pthread_mutex_unlock(&philo->lock);
-	if (!(philo->id % 2))
+	if (!(philo->id % 2) || (philo->id == philo->data->nbr_philos))
 		ft_usleep(philo->data->meal_duration * 900, philo->data);
 	while (!ft_the_end(philo->data))
 	{
-		routine = ft_routine(philo);
-		if (routine)
+		if (ft_routine(philo))
 			return (NULL);
 	}
 	return (NULL);
 }
 
-void	ft_monitor_philo(t_philo *philo, t_data *data)
+static void	ft_monitor_philo(t_philo *philo, t_data *data)
 {
 	unsigned long	time;
 
@@ -86,7 +84,7 @@ void	ft_monitor_philo(t_philo *philo, t_data *data)
 	pthread_mutex_unlock(&philo->lock);
 }
 
-int	ft_monitor(void *data_ptr)
+void	ft_monitor(void *data_ptr)
 {
 	int			i;
 	t_data		*data;
@@ -101,7 +99,6 @@ int	ft_monitor(void *data_ptr)
 			data->stop = 1;
 			pthread_mutex_unlock(&data->stop_mutex);
 			pthread_mutex_unlock(&data->finished_mutex);
-			return (0);
 		}
 		pthread_mutex_unlock(&data->finished_mutex);
 		i = 0;
@@ -109,5 +106,4 @@ int	ft_monitor(void *data_ptr)
 			ft_monitor_philo(&data->philos[i ++], data);
 		usleep(10);
 	}
-	return (0);
 }

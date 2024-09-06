@@ -6,13 +6,13 @@
 /*   By: octoross <octoross@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 22:11:00 by octoross          #+#    #+#             */
-/*   Updated: 2024/09/05 15:35:38 by octoross         ###   ########.fr       */
+/*   Updated: 2024/09/07 00:17:05 by octoross         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	ft_args_help(int n)
+static void	ft_args_help(int n)
 {
 	if (n == 1)
 		printf("%s\e[1m%s\e[m", MESSAGE_1, HELP_1);
@@ -29,7 +29,7 @@ void	ft_args_help(int n)
 			HELP_1, HELP_2, HELP_3, HELP_4, HELP_5);
 }
 
-void	ft_help(int argc, char **argv)
+static void	ft_help(int argc, char **argv)
 {
 	if (argc == 1)
 		ft_args_help(0);
@@ -47,7 +47,7 @@ void	ft_help(int argc, char **argv)
 		ft_args_help(0);
 }
 
-void	ft_attribute_parsing(t_data *data, int argc, char **argv, int *valid)
+static void	ft_attribute_parsing(t_data *data, int argc, char **argv, int *valid)
 {
 	*valid = 0;
 	data->nbr_philos = ft_atopi(argv[0]);
@@ -60,25 +60,25 @@ void	ft_attribute_parsing(t_data *data, int argc, char **argv, int *valid)
 		data->nbr_meals = -1;
 }
 
-int	ft_parsing(t_data *data, int argc, char **argv)
+bool	ft_parsing(t_data *data, int argc, char **argv)
 {
 	int	valid;
 
 	if (argc < 4)
-		return (printf("%s", ERR_NE_ARGS), 1);
+		return (printf("%s", ERR_NE_ARGS), true);
 	else if (argc > 5)
-		return (printf("%s", ERR_TM_ARGS), 1);
+		return (printf("%s", ERR_TM_ARGS), true);
 	if ((!ft_strcmp(argv[0], "-help") || !ft_strcmp(argv[0], "help")
 			|| !ft_strcmp(argv[0], "-h")) && HELP)
 		return (ft_help(argc, argv), -1);
 	ft_attribute_parsing(data, argc, argv, &valid);
 	if (valid == 3 && ((data->fasting_limit < 10) || (data->meal_duration < 10)
 			|| (data->sleep_duration < 10)))
-		return (printf("%s", ERR_DURATION), 1);
+		return (printf("%s", ERR_DURATION), true);
 	if ((data->nbr_philos <= 0) || (valid != 3)
 		|| (data->nbr_meals <= 0 && argc == 5))
-		return (printf("%s", ERR_ATOI), 1);
+		return (printf("%s", ERR_ATOI), true);
 	if (data->nbr_philos == 1)
-		return (ft_case_one(data), 1);
-	return (0);
+		return (ft_case_one(data), true);
+	return (false);
 }

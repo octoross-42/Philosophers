@@ -6,7 +6,7 @@
 /*   By: octoross <octoross@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 19:56:24 by octoross          #+#    #+#             */
-/*   Updated: 2024/09/05 15:35:02 by octoross         ###   ########.fr       */
+/*   Updated: 2024/09/07 00:10:29 by octoross         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ unsigned long	ft_get_time(struct timeval ref)
 	return ((tv.tv_sec - ref.tv_sec) * 1000000L + (tv.tv_usec - ref.tv_usec));
 }
 
-int	ft_usleep(unsigned long sleep_duration, t_data *data)
+bool	ft_usleep(unsigned long sleep_duration, t_data *data)
 {
 	struct timeval	start;
 
@@ -28,8 +28,8 @@ int	ft_usleep(unsigned long sleep_duration, t_data *data)
 	while (!ft_the_end(data))
 	{
 		if (ft_get_time(start) >= sleep_duration)
-			return (0);
+			return (false);
 		usleep(data->usleep_pace);
 	}
-	return (1);
+	return (true);
 }

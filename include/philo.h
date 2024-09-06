@@ -6,7 +6,7 @@
 /*   By: octoross <octoross@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/28 17:32:59 by octoross          #+#    #+#             */
-/*   Updated: 2024/09/05 15:40:46 by octoross         ###   ########.fr       */
+/*   Updated: 2024/09/07 00:19:31 by octoross         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,19 +57,19 @@ typedef struct s_data
 }	t_data;
 
 unsigned long	ft_get_time(struct timeval ref);
-int				ft_usleep(unsigned long sleep_duration, t_data *data);
+bool			ft_usleep(unsigned long sleep_duration, t_data *data);
 
 void			ft_clear_data(t_data *data, int n, int thread, char *err);
-int				ft_parsing(t_data *data, int argc, char **argv);
-int				ft_case_one(t_data *data);
-int				ft_init(t_data *data);
+bool			ft_parsing(t_data *data, int argc, char **argv);
+bool			ft_case_one(t_data *data);
+bool			ft_init(t_data *data);
 
-int				ft_print_action(t_philo *philo, char *action);
-int				ft_eat(t_philo *philo);
-int				ft_sleep(t_philo *philo);
-int				ft_the_end(t_data *data);
+bool			ft_print_action(t_philo *philo, char *action);
+bool			ft_eat(t_philo *philo);
+bool			ft_sleep(t_philo *philo);
+bool			ft_the_end(t_data *data);
 
 void			*ft_start_routine(void *philo_ptr);
-int				ft_monitor(void *data_ptr);
+void			ft_monitor(void *data_ptr);
 
 #endif

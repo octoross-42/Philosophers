@@ -6,13 +6,13 @@
 /*   By: octoross <octoross@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/28 17:31:19 by octoross          #+#    #+#             */
-/*   Updated: 2024/09/04 18:33:18 by octoross         ###   ########.fr       */
+/*   Updated: 2024/09/07 00:14:30 by octoross         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	ft_case_one(t_data *data)
+bool	ft_case_one(t_data *data)
 {
 	unsigned long	time;
 
@@ -24,14 +24,14 @@ int	ft_case_one(t_data *data)
 	else
 		data->usleep_pace = USLEEP_PACE;
 	if (pthread_mutex_init(&data->stop_mutex, NULL))
-		return (printf("%s", ERR_INIT_MUTEX), 1);
+		return (printf("%s", ERR_INIT_MUTEX), true);
 	if (gettimeofday(&data->start, NULL) == -1)
-		return (printf("%s", ERR_TIME), 1);
+		return (printf("%s", ERR_TIME), true);
 	printf("0 1 %s\n", ACTION_FORK);
 	ft_usleep(data->fasting_limit * 1000, data);
 	time = ft_get_time(data->start);
 	printf("%lu 1 %s\n", (time / 1000), ACTION_DIED);
-	return (0);
+	return (false);
 }
 
 int	main(int argc, char **argv)

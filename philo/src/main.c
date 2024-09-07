@@ -6,7 +6,7 @@
 /*   By: octoross <octoross@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/28 17:31:19 by octoross          #+#    #+#             */
-/*   Updated: 2024/09/07 00:14:30 by octoross         ###   ########.fr       */
+/*   Updated: 2024/09/07 22:33:30 by octoross         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,6 @@ int	main(int argc, char **argv)
 		return (1);
 	if (ft_init(&data))
 		return (1);
-	ft_clear_data(&data, -1, 0, NULL);
+	ft_clear_data(&data, 0, NULL);
 	return (0);
 }

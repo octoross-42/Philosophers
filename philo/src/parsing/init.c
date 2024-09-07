@@ -12,100 +12,105 @@
 
 #include "philo.h"
 
-void	ft_clear_data(t_data *data, int n, int thread, char *err)
+void	ft_clear_data(t_data *data, int thread, char *err)
 {
-	int	i;
+	int		i;
+	t_philo	*philo;
+	t_philo	*to_free;
 
 	pthread_mutex_destroy(&data->write);
 	pthread_mutex_destroy(&data->finished_mutex);
 	pthread_mutex_destroy(&data->stop_mutex);
-	n = (data->nbr_philos + 1) * (n == -1) - 1;
 	thread = (data->nbr_philos + 1) * (thread == -1) - 1;
 	i = 0;
-	while (i < n)
+	philo = data->philos;
+	while (philo)
 	{
-		pthread_mutex_destroy(data->philos[i].left_fork);
-		pthread_mutex_destroy(&data->philos[i].lock);
-		free(data->philos[i].left_fork);
-		if (i < thread)
-		{
-			if (pthread_join(*data->philos[i].thread, NULL))
-				printf("%s", ERR_DESTROY_THREAD);
-		}
-		free(data->philos[i ++].thread);
+		pthread_mutex_destroy(&philo->lock);
+		pthread_mutex_destroy(philo->left_fork);
+		free(philo->left_fork);
+		if ((i < thread) && pthread_join(philo->thread, NULL))
+			printf("%s", ERR_DESTROY_THREAD);
+		to_free = philo;
+		philo = philo->next;
+		free(to_free);
 	}
-	if (data->philos)
-		free(data->philos);
 	if (err)
 		printf("%s", err);
 }
 
 static bool	ft_init_threads(t_data *data)
 {
-	int	i;
+	t_philo	*philo;
 
 	if (gettimeofday(&data->start, NULL) == -1)
-		return (ft_clear_data(data, -1, 0, ERR_TIME), true);
-	i = 0;
-	while (i < data->nbr_philos)
+		return (ft_clear_data(data, 0, ERR_TIME), false);
+	philo = data->philos;
+	while (philo)
 	{
-		if (pthread_create(data->philos[i].thread,
-				NULL, &ft_start_routine, &data->philos[i]))
-			return (ft_clear_data(data, -1, i, ERR_INIT_THREAD), true);
-		i ++;
+		if (pthread_create(&philo->thread,
+				NULL, &ft_start_routine, philo))
+			return (ft_clear_data(data, philo->id - 1, ERR_INIT_THREAD), false);
+		philo = philo->next;
 	}
 	ft_monitor(data);
-	i = 0;
-	while (i < data->nbr_philos)
+	philo = data->philos;
+	while (philo)
 	{
-		if (pthread_join(*data->philos[i ++].thread, NULL))
+		if (pthread_join(philo->thread, NULL))
 			printf("%s", ERR_DESTROY_THREAD);
+		philo = philo->next;
 	}
-	return (false);
+	return (true);
 }
 
-static bool	ft_init_philo(t_philo *philos, int i, t_data *data)
+static bool	ft_init_philo(t_philo *philo, int i, t_data *data)
 {
-	philos[i].die_at = 0;
-	philos[i].last_meal = 0;
-	philos[i].id = i + 1;
-	philos[i].nbr_time_eaten = 0;
-	philos[i].is_eating = 0;
-	philos[i].data = data;
-	philos[i].thread = (pthread_t *)malloc(sizeof(pthread_t));
-	if (!philos[i].thread)
-		return (printf("%s", ERR_MALLOC), true);
-	philos[i].left_fork = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
-	if (!(philos[i].left_fork))
-		return (printf("%s", ERR_MALLOC), free(philos[i].thread), true);
-	if (pthread_mutex_init(philos[i].left_fork, NULL))
+	philo->die_at = 0;
+	philo->last_meal = 0;
+	philo->id = i + 1;
+	philo->nbr_time_eaten = 0;
+	philo->data = data;
+	philo->next = NULL;
+	philo->left_fork = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
+	if (!(philo->left_fork))
+		return (printf("%s", ERR_MALLOC), false);
+	if (pthread_mutex_init(philo->left_fork, NULL))
 		return (printf("%s", ERR_INIT_MUTEX),
-			free(philos[i].left_fork), free(philos[i].thread), true);
+			free(philo->left_fork), false);
 	if (i > 0)
-		philos[i - 1].right_fork = philos[i].left_fork;
-	if (i == data->nbr_philos - 1)
-		philos[i].right_fork = philos[0].left_fork;
-	if (pthread_mutex_init(&philos[i].lock, NULL))
+		philo->previous->right_fork = philo->left_fork;
+	if (pthread_mutex_init(&philo->lock, NULL))
 		return (printf("%s", ERR_INIT_MUTEX),
-			pthread_mutex_destroy(philos[i].left_fork),
-			free(philos[i].left_fork), free(philos[i].thread), true);
-	return (false);
+			pthread_mutex_destroy(philo->left_fork),
+			free(philo->left_fork), false);
+	return (true);
 }
 
 static bool	ft_init_philos(t_data *data)
 {
 	int		i;
+	t_philo	*philo;
+	t_philo	*previous;
 
-	data->philos = malloc(sizeof(t_data) * data->nbr_philos);
-	if (!data->philos)
-		return (ft_clear_data(data, 0, 0, ERR_MALLOC), true);
+	previous = NULL;
 	i = 0;
 	while (i < data->nbr_philos)
 	{
-		if (ft_init_philo(data->philos, i ++, data))
-			return (ft_clear_data(data, i - 1, 0, NULL), true);
+		philo = (t_philo *)malloc(sizeof(t_philo));
+		if (!philo)
+			return (ft_clear_data(data, 0, ERR_MALLOC), false);
+		philo->previous = previous;
+		if (!previous)
+			data->philos = philo;
+		else
+			previous->next = philo;
+		if (!ft_init_philo(philo, i ++, data))
+			return (free(philo), ft_clear_data(data, 0, NULL), false);
+		previous = philo;
 	}
-	return (false);
+	philo->right_fork = data->philos->left_fork;
+	return (true);
 }
 
 bool	ft_init(t_data *data)
@@ -118,6 +123,7 @@ bool	ft_init(t_data *data)
 		data->usleep_pace = 50;
 	else
 		data->usleep_pace = USLEEP_PACE;
+	data->monitor_pace = ft_pgcd(data->meal_duration, data->sleep_duration);
 	if (pthread_mutex_init(&data->write, NULL))
 		return (printf("%s", ERR_INIT_MUTEX), true);
 	if (pthread_mutex_init(&data->stop_mutex, NULL))
@@ -127,9 +133,9 @@ bool	ft_init(t_data *data)
 		return (pthread_mutex_destroy(&data->write),
 			pthread_mutex_destroy(&data->stop_mutex),
 			printf("%s", ERR_INIT_MUTEX), true);
-	if (ft_init_philos(data))
+	if (!ft_init_philos(data))
 		return (true);
-	if (ft_init_threads(data))
+	if (!ft_init_threads(data))
 		return (true);
 	return (false);
 }

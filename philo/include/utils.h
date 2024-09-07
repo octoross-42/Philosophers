@@ -6,7 +6,7 @@
 /*   By: octoross <octoross@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 01:30:46 by octoross          #+#    #+#             */
-/*   Updated: 2024/09/07 00:10:11 by octoross         ###   ########.fr       */
+/*   Updated: 2024/09/07 22:26:48 by octoross         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,5 +54,6 @@
 int				ft_strcmp(const char *s1, const char *s2);
 unsigned long	ft_atosi(const char *s, int *valid);
 int				ft_atopi(const char *s);
+unsigned long	ft_pgcd(unsigned long u, unsigned long v);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: octoross <octoross@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 22:11:00 by octoross          #+#    #+#             */
-/*   Updated: 2024/09/07 00:17:05 by octoross         ###   ########.fr       */
+/*   Updated: 2024/09/07 23:02:10 by octoross         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,8 @@ static void	ft_help(int argc, char **argv)
 		ft_args_help(0);
 }
 
-static void	ft_attribute_parsing(t_data *data, int argc, char **argv, int *valid)
+static void	ft_attribute_parsing(t_data *data,
+	int argc, char **argv, int *valid)
 {
 	*valid = 0;
 	data->nbr_philos = ft_atopi(argv[0]);

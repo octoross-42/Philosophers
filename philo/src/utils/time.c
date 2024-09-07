@@ -6,7 +6,7 @@
 /*   By: octoross <octoross@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 19:56:24 by octoross          #+#    #+#             */
-/*   Updated: 2024/09/07 00:10:29 by octoross         ###   ########.fr       */
+/*   Updated: 2024/09/07 22:57:23 by octoross         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@ bool	ft_usleep(unsigned long sleep_duration, t_data *data)
 	while (!ft_the_end(data))
 	{
 		if (ft_get_time(start) >= sleep_duration)
-			return (false);
+			return (true);
 		usleep(data->usleep_pace);
 	}
-	return (true);
+	return (false);
 }

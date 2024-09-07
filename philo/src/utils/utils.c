@@ -6,7 +6,7 @@
 /*   By: octoross <octoross@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 01:26:42 by octoross          #+#    #+#             */
-/*   Updated: 2024/09/05 15:43:35 by octoross         ###   ########.fr       */
+/*   Updated: 2024/09/07 22:26:39 by octoross         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,4 +60,19 @@ int	ft_atopi(const char *s)
 	if (!s[i])
 		return (n);
 	return (-1);
+}
+
+unsigned long	ft_pgcd(unsigned long u, unsigned long v)
+{
+	unsigned long	n;
+
+	if (u < v)
+		return (ft_pgcd(v, u));
+	while (v != 0)
+	{
+		n = (u % v);
+		u = v;
+		v = n;
+	}
+	return (n);
 }

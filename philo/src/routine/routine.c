@@ -26,20 +26,28 @@ bool	ft_the_end(t_data *data)
 
 static bool	ft_routine(t_philo *philo)
 {
-	if (ft_eat(philo))
-		return (true);
-	if (philo->nbr_time_eaten == philo->data->nbr_meals)
+	t_data	*data;
+
+	data = philo->data;
+	if (!ft_eat(philo))
+		return (false);
+	if (philo->nbr_time_eaten == data->nbr_meals)
 	{
-		pthread_mutex_lock(&philo->data->finished_mutex);
-		philo->data->finished_philos ++;
-		pthread_mutex_unlock(&philo->data->finished_mutex);
-		return (true);
+		pthread_mutex_lock(&data->finished_mutex);
+		data->finished_philos ++;
+		pthread_mutex_unlock(&data->finished_mutex);
+		return (false);
 	}
-	if (ft_sleep(philo))
-		return (true);
-	if (ft_print_action(philo, ACTION_THINK))
-		return (true);
-	return (false);
+	if (!ft_print_action(philo, ACTION_SLEEP))
+		return (false);
+	if (!ft_usleep(data->sleep_duration * 1000, data))
+		return (false);
+	if (!ft_print_action(philo, ACTION_THINK))
+		return (false);
+	if (data->meal_duration >= data->sleep_duration)
+		ft_usleep((data->meal_duration - data->sleep_duration + 1)
+			* 1000, data);
+	return (true);
 }
 
 void	*ft_start_routine(void *philo_ptr)
@@ -53,13 +61,8 @@ void	*ft_start_routine(void *philo_ptr)
 	philo->die_at = time + philo->data->fasting_limit * 1000;
 	philo->last_meal = time;
 	pthread_mutex_unlock(&philo->lock);
-	if (!(philo->id % 2) || (philo->id == philo->data->nbr_philos))
-		ft_usleep(philo->data->meal_duration * 900, philo->data);
-	while (!ft_the_end(philo->data))
-	{
-		if (ft_routine(philo))
-			return (NULL);
-	}
+	while (!ft_the_end(philo->data) && ft_routine(philo))
+		;
 	return (NULL);
 }
 
@@ -86,12 +89,13 @@ static void	ft_monitor_philo(t_philo *philo, t_data *data)
 
 void	ft_monitor(void *data_ptr)
 {
-	int			i;
+	t_philo		*philo;
 	t_data		*data;
 
 	data = (t_data *)data_ptr;
 	while (!data->stop)
 	{
+		ft_usleep(data->monitor_pace * 1000, data);
 		pthread_mutex_lock(&data->finished_mutex);
 		if (data->finished_philos == data->nbr_philos)
 		{
@@ -101,9 +105,11 @@ void	ft_monitor(void *data_ptr)
 			pthread_mutex_unlock(&data->finished_mutex);
 		}
 		pthread_mutex_unlock(&data->finished_mutex);
-		i = 0;
-		while (i < data->nbr_philos)
-			ft_monitor_philo(&data->philos[i ++], data);
-		usleep(10);
+		philo = data->philos;
+		while (philo)
+		{
+			ft_monitor_philo(philo, data);
+			philo = philo->next;
+		}
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: octoross <octoross@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 01:30:46 by octoross          #+#    #+#             */
-/*   Updated: 2024/09/07 22:26:48 by octoross         ###   ########.fr       */
+/*   Updated: 2024/09/07 23:14:17 by octoross         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 # define UTILS_H
 
 # define HELP 1
-# define USLEEP_PACE 50
+# define USLEEP_PACE 10
 
 # define ERR_DURATION "Durations under 10ms are not accepted due to reality\n"
 # define ERR_NE_ARGS "Error : Not enough arguments\n"
